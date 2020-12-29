@@ -1,28 +1,64 @@
-import React, { useEffect, useState } from "react";
+  import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import "./todoList.scss";
 import { deleteTodo } from "../../actions";
+import { useHistory } from "react-router-dom";
 export const TodoList = () => {
-  const [isChecked, setIsChecked] = useState(false);
-  const [todoList, settodoList] = useState<any>();
+  // const [isChecked, setIsChecked] = useState(false);
   const selectList = [
-    { value: 1, name: "official staff" },
-    { value: 2, name: "probationary staff" },
+    { value: 1, name: "All" },
+    { value: 2, name: "is Check" },
+    { value: 3, name: "No Check" },
   ];
+  const history = useHistory();
+  const [todoList, setTodoList] = useState<any>();
+  const [currrentOption, setCurrentOption] = useState<any>();
   const dispatch = useDispatch<any>();
+  const dataStore: any = useSelector((state: any) => state.todoReducer.items);
 
-  const value: any = useSelector((state) => state);
   useEffect(() => {
-    settodoList(value.todo.todo);
-  }, [value]);
+    setTodoList(dataStore);
+  }, [dataStore]);
 
-  const handleSelectedTodo = (event: any) => {
-    console.log(event.target.value);
+  // isCheck todo
+  const handleChecked = (item: any) => {
+    const newToDos = [...todoList];
+    newToDos.forEach((element: any) => {
+      if (element.id === item.id) {
+        element.isChecked = !element.isChecked;
+      }
+    });
+    setTodoList(newToDos);
+    currrentOption && handleSelectedTodo(currrentOption);
   };
 
+  // handle select todo
+  const handleSelectedTodo = (event: any) => {
+    setCurrentOption(event);
+    if (event.target.value === "1") {
+      setTodoList(dataStore);
+    }
+    if (event.target.value === "2") {
+      const sort = [...dataStore].filter((e: any) => e.isChecked);
+      setTodoList(sort);
+    }
+    if (event.target.value === "3") {
+      const sort = [...dataStore].filter((e: any) => !e.isChecked);
+      setTodoList(sort);
+    }
+  };
+
+  // Delete todo
   const handleDelete = (id: number) => {
-    dispatch(deleteTodo(id));
+    const deleteItem = todoList.filter((item: any) => item.id !== id);
+    console.log(todoList);
+    dispatch(deleteTodo(deleteItem));
+  };
+
+  // Edit todo
+  const handleEdit = (event: any) => {
+    history.push(`/edit/${event.id}`);
   };
 
   return (
@@ -71,15 +107,22 @@ export const TodoList = () => {
                       <input
                         className="form-check-input"
                         type="checkbox"
-                        value=""
-                        checked={isChecked}
-                        onChange={() => setIsChecked(!isChecked)}
+                        value={item.id}
+                        checked={item.isChecked ? item.isChecked : false}
+                        onChange={() => handleChecked(item)}
                       />
                     </div>
                   </td>
                   <td>{item.name}</td>
                   <td>{item.age}</td>
                   <td>
+                    <i
+                      className="fas fa-pencil-alt"
+                      onClick={() => handleEdit(item)}
+                    ></i>
+                  </td>
+                  <td>
+                    {/* <i className="fas fa-pencil-alt"></i> */}
                     <i
                       className="fas fa-trash-alt"
                       onClick={() => handleDelete(item.id)}

@@ -1,31 +1,58 @@
-import { uniqueId } from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { createTodo } from "../../actions";
-import "./addTodoList.scss";
+import { useDispatch, useSelector } from "react-redux";
+import "./editTodoList.scss";
+import { useHistory, useParams } from "react-router-dom";
+import { updateTodo } from "../../actions";
 interface FormTodos {
   nameTodo: string;
   ageTodo: string;
 }
-export const AddTodoList = () => {
+
+export const EditTodoList = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
-  const { register, handleSubmit, errors } = useForm<FormTodos>();
+  const { id } = useParams<any>();
+  const [listData, setListData] = useState<any>();
+  const dataStore: any = useSelector((state: any) => state.todoReducer.items);
+  const { register, handleSubmit, errors, setValue } = useForm<FormTodos>();
+
+  const goBack = () => {
+    history.push("/");
+  };
+
+  useEffect(() => {
+    if (id && dataStore) {
+      setListData(dataStore);
+      const listTodo = dataStore;
+      listTodo.forEach((element: any) => {
+        if (Number(id) === element.id) {
+          setValue("nameTodo", element.name);
+          setValue("ageTodo", element.age);
+        }
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, dataStore]);
+
+  // handle edit todo 
   const onSubmit = (data: any, e: any) => {
     e.preventDefault();
     if (data) {
-      const newItems = {
-        id: Number(uniqueId()),
-        name: data.nameTodo,
-        age: Number(data.ageTodo),
-      };
-      dispatch(createTodo(newItems));
+      const result = listData.map((value: any) => {
+        if (Number(id) === value.id) {
+          value.name = data.nameTodo ? data.nameTodo : value.name;
+          value.age = Number(data.ageTodo) ? Number(data.ageTodo) : value.age;
+        }
+        return value;
+      });
+      dispatch(updateTodo(result));
     }
-    e.target.reset();
+    goBack();
   };
-  
+
   return (
-    <div className="add-todo">
+    <div className="edit-todo">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
           <label className="form-label">Name member</label>
@@ -78,9 +105,9 @@ export const AddTodoList = () => {
             </p>
           )}
         </div>
-          <button type="submit" className="btn btn-success">
-            Add Todo
-          </button>
+        <button type="submit" className="btn btn-success">
+          Edit Todo
+        </button>
       </form>
     </div>
   );
