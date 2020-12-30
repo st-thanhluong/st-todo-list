@@ -8,6 +8,11 @@ export const initialState = {
     { id: 13, name: "thành lương", age: 23 },
     { id: 14, name: "thành lương", age: 22 },
     { id: 15, name: "thành lương", age: 21 },
+    { id: 16, name: "thành lương", age: 20 },
+    { id: 17, name: "thành lương", age: 19 },
+    { id: 18, name: "thành lương", age: 18 },
+    { id: 19, name: "thành lương", age: 17 },
+    { id: 20, name: "thành lương", age: 16 },
   ],
 };
 // eslint-disable-next-line import/no-anonymous-default-export

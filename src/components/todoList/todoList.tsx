@@ -1,15 +1,22 @@
-  import React, { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "./todoList.scss";
 import { deleteTodo } from "../../actions";
 import { useHistory } from "react-router-dom";
+
 export const TodoList = () => {
   // const [isChecked, setIsChecked] = useState(false);
   const selectList = [
     { value: 1, name: "All" },
     { value: 2, name: "is Check" },
     { value: 3, name: "No Check" },
+  ];
+  const titleTable = [
+    { id: 1, titleName: "#" },
+    { id: 2, titleName: "Role" },
+    { id: 3, titleName: "Name Member" },
+    { id: 4, titleName: "Age Member" },
+    { id: 5, titleName: "Action" },
   ];
   const history = useHistory();
   const [todoList, setTodoList] = useState<any>();
@@ -63,55 +70,51 @@ export const TodoList = () => {
 
   return (
     <div className="list-todo">
-      <Form>
-        <Form.Group controlId="exampleForm.SelectCustom">
-          <Form.Label>Select Role</Form.Label>
-          <Form.Control
-            as="select"
-            custom
-            onChange={(event) => handleSelectedTodo(event)}
-          >
-            <option value="0" disabled>
-              Select Role
-            </option>
-            {selectList.map((i) => {
+      <label className="font-14">Select Role</label>
+      <div className="select-todo">
+        <select onChange={(event) => handleSelectedTodo(event)}>
+          <option value="0" disabled>
+            Choose an option
+          </option>
+          {selectList.map((i) => {
+            return (
+              <option key={i.value} value={i.value}>
+                {i.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+
+      <table>
+        <thead className="tbl-header">
+          <tr>
+            {titleTable.map((item: any) => {
               return (
-                <option key={i.value} value={i.value}>
-                  {i.name}
-                </option>
+                <th scope="col" key={item.id}>
+                  {item.titleName}
+                </th>
               );
             })}
-          </Form.Control>
-        </Form.Group>
-      </Form>
-
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Role</th>
-            <th scope="col">Name Member</th>
-            <th scope="col">Age Member</th>
-            <th scope="col">Action</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="tbl-content">
           {todoList &&
             todoList.length > 0 &&
             todoList.map((item: any) => {
               return (
                 <tr key={item.id}>
-                  <th scope="row">{item.id}</th>
+                  <td>{item.id}</td>
                   <td>
-                    <div className="form-check">
-                      <input
-                        className="form-check-input"
-                        type="checkbox"
-                        value={item.id}
-                        checked={item.isChecked ? item.isChecked : false}
-                        onChange={() => handleChecked(item)}
-                      />
-                    </div>
+                    {/* <div className="form-check"> */}
+                    <input
+                      className=""
+                      type="checkbox"
+                      value={item.id}
+                      checked={item.isChecked ? item.isChecked : false}
+                      onChange={() => handleChecked(item)}
+                    />
+                    {/* </div> */}
                   </td>
                   <td>{item.name}</td>
                   <td>{item.age}</td>
@@ -120,9 +123,6 @@ export const TodoList = () => {
                       className="fas fa-pencil-alt"
                       onClick={() => handleEdit(item)}
                     ></i>
-                  </td>
-                  <td>
-                    {/* <i className="fas fa-pencil-alt"></i> */}
                     <i
                       className="fas fa-trash-alt"
                       onClick={() => handleDelete(item.id)}
