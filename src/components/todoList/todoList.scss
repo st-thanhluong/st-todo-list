@@ -5,19 +5,19 @@
   .select-todo {
     position: relative;
     display: flex;
-    width: 20em;
-    height: 3em;
+    width: 30rem;
+    height: 4rem;
     line-height: 3;
     background: $dark-blue;
     overflow: hidden;
-    border-radius: 0.5em;
+    border-radius: 0.5rem;
     font-size: 1.4rem;
     select {
       flex: 1;
-      padding: 0 0.5em;
+      padding: 0 0.5rem;
       color: $black;
       cursor: pointer;
-      border-radius: 0.5em;
+      border-radius: 0.5rem;
     }
     margin-bottom: 2rem;
   }
@@ -27,7 +27,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    padding: 0 1em;
+    padding: 0 1rem;
     background: $dark-blue;
     cursor: pointer;
     pointer-events: none;
