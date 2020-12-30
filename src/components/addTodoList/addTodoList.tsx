@@ -3,11 +3,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { createTodo } from "../../actions";
-import "./addTodoList.scss";
+import { MESSAGE_TODO } from "../../constants/messageType";
 interface FormTodos {
   nameTodo: string;
   ageTodo: string;
 }
+const errorMessage = (error: any) => {
+  return <div className="error-required">{error}</div>;
+};
 export const AddTodoList = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm<FormTodos>();
@@ -23,15 +26,15 @@ export const AddTodoList = () => {
     }
     e.target.reset();
   };
-  
+
   return (
     <div className="add-todo">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3">
-          <label className="form-label">Name member</label>
+        <div className="form-input">
+          <label className="form-label-thanh">Name member</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control-thanh"
             placeholder="Please enter name members"
             name="nameTodo"
             ref={register({
@@ -39,20 +42,18 @@ export const AddTodoList = () => {
               minLength: 3,
             })}
           />
-          {errors.nameTodo?.type === "required" && (
-            <p style={{ color: "red" }}>Your input is required</p>
-          )}
-          {errors.nameTodo?.type === "minLength" && (
-            <p style={{ color: "red" }}>
-              Your input must be larger then 3 characters
-            </p>
-          )}
+          {errors.nameTodo &&
+            errors.nameTodo?.type === "required" &&
+            errorMessage(MESSAGE_TODO.required)}
+          {errors.nameTodo &&
+            errors.nameTodo?.type === "minLength" &&
+            errorMessage(MESSAGE_TODO.minLength)}
         </div>
-        <div className="mb-3">
-          <label className="form-label">Age members</label>
+        <div className="form-input">
+          <label className="form-label-thanh">Age members</label>
           <input
             type="text"
-            className="form-control"
+            className="form-control-thanh"
             placeholder="Please enter age members"
             name="ageTodo"
             ref={register({
@@ -64,23 +65,13 @@ export const AddTodoList = () => {
               },
             })}
           />
-          {errors.ageTodo?.type === "required" && (
-            <p style={{ color: "red" }}>Your input is required</p>
-          )}
-          {errors.ageTodo?.type === "maxLength" && (
-            <p style={{ color: "red" }}>
-              Your input must be less than 3 characters
-            </p>
-          )}
-          {errors.ageTodo?.type === "pattern" && (
-            <p style={{ color: "red" }}>
-              Your input should be a number between 1-100.
-            </p>
-          )}
+           {errors.ageTodo && errors.ageTodo?.type === "required" && errorMessage(MESSAGE_TODO.required)}
+          {errors.ageTodo && errors.ageTodo?.type === "maxLength" && errorMessage(MESSAGE_TODO.maxLength)}
+          {errors.ageTodo && errors.ageTodo?.type === "pattern" && errorMessage(MESSAGE_TODO.pattern)}
         </div>
-          <button type="submit" className="btn btn-success">
-            Add Todo
-          </button>
+        <button type="submit" className="btn-small btn-todolist">
+          Add Todo
+        </button>
       </form>
     </div>
   );

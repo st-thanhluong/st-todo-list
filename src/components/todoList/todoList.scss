@@ -1,4 +1,79 @@
+@import "../../style/common/style.scss";
 .list-todo {
-    margin-top: 20px;
-    i{cursor: pointer;}
+  margin-top: 2rem;
+
+  .select-todo {
+    position: relative;
+    display: flex;
+    width: 20em;
+    height: 3em;
+    line-height: 3;
+    background: $dark-blue;
+    overflow: hidden;
+    border-radius: 0.5em;
+    font-size: 1.4rem;
+    select {
+      flex: 1;
+      padding: 0 0.5em;
+      color: $black;
+      cursor: pointer;
+      border-radius: 0.5em;
+    }
+    margin-bottom: 2rem;
   }
+  /* Arrow */
+  .select-todo::after {
+    content: "\25BC";
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: $dark-blue;
+    cursor: pointer;
+    pointer-events: none;
+    -webkit-transition: 0.25s all ease;
+    -o-transition: 0.25s all ease;
+    transition: 0.25s all ease;
+    
+  }
+  .select-todo:hover::after {
+    color: $vivid-orange;
+  }
+
+  table {
+    width: 100%;
+    table-layout: auto;
+    padding-top: 20rem;
+    .tbl-header {
+      background-color: $light-red;
+      border: 1px solid $light-red;
+    }
+    .tbl-content {
+      height: 30rem;
+      overflow-x: auto;
+      margin-top: 0px;
+      border: 0.1rem solid $light-red;
+    }
+    tr {
+      th {
+        padding: 2rem 1.5rem;
+        text-align: left;
+        font-weight: 500;
+        font-size: 1.4rem;
+        text-transform: uppercase;
+      }
+      td {
+        padding: 1.5rem;
+        text-align: left;
+        vertical-align: middle;
+        font-weight: 300;
+        font-size: 1.4rem;
+        border-bottom: 0.1rem solid $light-red;
+        i {
+          margin-right: 2rem;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
