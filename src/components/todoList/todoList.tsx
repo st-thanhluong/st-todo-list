@@ -5,7 +5,7 @@ import { deleteTodo } from "../../actions";
 import { useHistory } from "react-router-dom";
 
 export const TodoList = () => {
-  // const [isChecked, setIsChecked] = useState(false);
+  
   const selectList = [
     { value: 1, name: "All" },
     { value: 2, name: "is Check" },
@@ -106,7 +106,6 @@ export const TodoList = () => {
                 <tr key={item.id}>
                   <td>{item.id}</td>
                   <td>
-                    {/* <div className="form-check"> */}
                     <input
                       className=""
                       type="checkbox"
@@ -114,7 +113,6 @@ export const TodoList = () => {
                       checked={item.isChecked ? item.isChecked : false}
                       onChange={() => handleChecked(item)}
                     />
-                    {/* </div> */}
                   </td>
                   <td>{item.name}</td>
                   <td>{item.age}</td>

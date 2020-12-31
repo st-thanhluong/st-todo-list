@@ -8,9 +8,11 @@ interface FormTodos {
   nameTodo: string;
   ageTodo: string;
 }
+
 const errorMessage = (error: any) => {
   return <div className="error-required">{error}</div>;
 };
+
 export const AddTodoList = () => {
   const dispatch = useDispatch();
   const { register, handleSubmit, errors } = useForm<FormTodos>();
