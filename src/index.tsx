@@ -1,23 +1,35 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { createStore } from "redux";
 import rootReducer from "./reducers";
-import { Provider } from 'react-redux';
+import {Provider} from 'react-redux';
+import {configureStore, getDefaultMiddleware} from "@reduxjs/toolkit";
+import appMiddleware from "./index.middleware";
+import createSagaMiddleware from "redux-saga";
+import ReactDOM from "react-dom";
 
-const store = createStore(rootReducer);
+const sagaMiddleware = createSagaMiddleware();
+const middleware = [...getDefaultMiddleware({
+    thunk: false,
+    serializableCheck: false,
+    immutableCheck: false
+}), sagaMiddleware];
+const store = configureStore({
+    reducer: rootReducer,
+    middleware
+})
+sagaMiddleware.run(appMiddleware)
 
 ReactDOM.render(
-  <Provider store={store}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  </Provider>,
-  document.getElementById("root")
+    <Provider store={store}>
+        <React.StrictMode>
+            <App/>
+        </React.StrictMode>
+    </Provider>,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
